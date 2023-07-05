@@ -27,23 +27,23 @@ const firstQ = [DIRECTIONS.DOWN, DIRECTIONS.DOWN_RIGHT, DIRECTIONS.RIGHT];
 export function calculateRelativeQuadrant(
     reference: Position,
     target: Position
-) {
+): DirectionKeys {
     const deltaX = target.x - reference.x;
     const deltaY = target.y - reference.y;
 
     if (deltaX > 0 && deltaY > 0) {
-        return firstQ;
+        return "DOWN_RIGHT";
     }
     if (deltaX < 0 && deltaY > 0) {
-        return secondQ;
+        return "DOWN_LEFT";
     }
     if (deltaX < 0 && deltaY < 0) {
-        return thirdQ;
+        return "UP_LEFT";
     }
     if (deltaX > 0 && deltaY < 0) {
-        return fourthQ;
+        return "UP_RIGHT";
     } else {
-        return [DIRECTIONS.STATIONARY];
+        return "STATIONARY";
     }
 }
 
@@ -54,10 +54,11 @@ function getVelocity(key: DirectionKeys, scalar: number) {
 
 export class Velocity extends Component {
     #direction: DirectionKeys = "STATIONARY";
-    #scalar: number = 0;
+    #scalar: number = 1;
     velocity: DirectionsValues = DIRECTIONS["STATIONARY"];
-    constructor() {
+    constructor(speed: number = 1) {
         super();
+        this.#scalar = speed
     }
 
     setDirection = (direction: DirectionKeys) => {
@@ -65,7 +66,7 @@ export class Velocity extends Component {
         this.velocity = getVelocity(this.#direction, this.#scalar);
     };
 
-    setScalar = (scalar: number) => {
+    setSpeed = (scalar: number) => {
         this.#scalar = scalar;
         this.velocity = getVelocity(this.#direction, this.#scalar);
     };

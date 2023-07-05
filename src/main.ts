@@ -6,8 +6,8 @@ import { Engine } from "./Engine/Engine";
 import { ERRORS } from "./scripts/Errors";
 import "./style.css";
 import { Shape } from "./Components/Shape";
-import { MousePositionListener } from "./EventListeners/MousePositionListener";
-import { MousePosition } from "./Components/MousePosition";
+import { MouseClickListener } from "./Components/MouseClickListener";
+import { MouseMoveListener } from "./Components/MouseMoveListener";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 800;
@@ -27,10 +27,6 @@ function setup() {
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
 
-    canvas.addEventListener("click",(e)=>{
-        console.log(e.x,e.y);
-    })
-
     engine = new Engine(canvas, context);
 
     createSystems(engine);
@@ -42,10 +38,7 @@ function createSystems(engine: Engine) {
     engine.addSystem(new System.Screen());
     engine.addSystem(new System.MouseFollower());
     engine.addSystem(new System.Renderer());
-    //const clicker = new MousePositionListener();
-    //const mouseInp = new System.MouseInput();
-    //clicker.addObserver(mouseInp);
-    //engine.addSystem(mouseInp);
+    engine.addSystem(new System.Move());
 }
 
 function createEntities(engine: Engine) {
@@ -55,14 +48,15 @@ function createEntities(engine: Engine) {
     engine.addComponents(engine.addEntity(), [
         new Position(500, 500),
         new Velocity(),
-        new Shape("Aqua", { h: 5, w: 5 }),
-        new MousePosition()
+        new Shape("Aqua", { h: 10, w: 10 }),
+        new MouseClickListener(),
     ]);
 
     engine.addComponents(engine.addEntity(), [
         new Position(111, 600),
         new Velocity(),
         new Shape("Coral", { h: 5, w: 5 }),
+        new MouseClickListener(),
     ]);
 }
 

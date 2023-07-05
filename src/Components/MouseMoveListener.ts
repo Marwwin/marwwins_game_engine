@@ -9,28 +9,37 @@ interface EListener {
     addEventListener: () => void;
 }
 
-export class MousePosition extends Component implements EListener {
+export class MouseMoveListener extends Component implements EListener {
     state: Position | undefined;
     HTMLElement: string;
     event: string;
+    hasChanged: boolean = false;
     eventListenerCallback: (e: any) => void;
 
     constructor() {
         super();
         this.HTMLElement = "canvas";
-        this.event = "click";
+        this.event = "mousemove";
         this.eventListenerCallback = (e) => {
+            console.log(e)
             this.state = {
                 x: e.x - e.target.offsetLeft,
-                y: e.y - e.target.offsetTop ,
+                y: e.y - e.target.offsetTop,
             };
+            this.hasChanged = true;
         };
 
-        this.addEventListener()
+        this.addEventListener();
     }
     addEventListener = () => {
         document
             .querySelector(this.HTMLElement)
             ?.addEventListener(this.event, this.eventListenerCallback);
+    };
+
+    removeEventListener = () => {
+        document
+            .querySelector(this.HTMLElement)
+            ?.removeEventListener(this.event, this.eventListenerCallback);
     };
 }
