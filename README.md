@@ -5,7 +5,9 @@ Based on [A TypesScript ECS in 99 Lines of Code ](https://maxwellforbes.com/post
 ## High level
 
 *Entities* are things (ID numbers) that you can register any amount of Components to
+
 *Components* are basically POJOs (plain old javascript objects) that "should not" contain any logic only data (this rule might be broken sometimes).
+
 *Systems* is how you can perform logic on entities and their components.
 
 Calling `engine.update()` will in turn call the update function on each System registered in the engine 
