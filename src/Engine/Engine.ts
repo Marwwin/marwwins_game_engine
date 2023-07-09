@@ -2,7 +2,6 @@ import { ERRORS } from "../scripts/Errors";
 import { Component } from "./Component";
 import { ComponentContainer } from "./ComponentContainer";
 import { Entity } from "./Entity";
-import { Publisher, PublisherClass } from "./Publisher";
 import { System } from "./System";
 
 export class Engine {
@@ -94,17 +93,6 @@ export class Engine {
         }
     }
 
-    // API: Observer
-
-    #pubs = new Map<Function, Publisher>();
-
-    addPublisher(pub: Publisher) {
-        this.#pubs.set(pub.constructor, pub);
-    }
-
-    getPublisher<T extends Publisher>(pub: PublisherClass<T>): T {
-        return this.#pubs.get(pub) as T;
-    }
 
     // Internal state checks and mutations
 
