@@ -1,22 +1,24 @@
 import { Component } from "./Component";
 
-export abstract class ComponentListener extends Component {
+export abstract class ListenerComponent extends Component {
+
     abstract target: string;
     abstract event: string;
 
-    static eventListenerAdded: boolean = false;
-    static instances: ComponentListener[] = [];
+    static eventListenerAdded: { [key: string]: boolean } = {};
+    static instances: ListenerComponent[] = [];
 
     abstract handleEvent(e: any): void;
 
     addEventListener() {
-        if (ComponentListener.eventListenerAdded) {
+        const className = this.constructor.name;
+        if (ListenerComponent.eventListenerAdded[className]) {
             return;
         }
         document
             .querySelector(this.target)
             ?.addEventListener(this.event, this.handleEvent);
-        ComponentListener.eventListenerAdded = true;
+        ListenerComponent.eventListenerAdded[className] = true;
     }
 
     removeEventListener = () => {

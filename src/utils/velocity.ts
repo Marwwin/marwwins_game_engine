@@ -1,6 +1,5 @@
-import { Component } from "../Engine/Component";
-import { type Keys } from "../utils/types";
-import { Position } from "./Position";
+import { XYPair, type Keys } from "./types";
+import { Body } from "../Components/Body";
 
 type DirectionsValues = (typeof DIRECTIONS)[DirectionKeys];
 type DirectionKeys = Keys<typeof DIRECTIONS>;
@@ -25,8 +24,8 @@ const secondQ = [DIRECTIONS.LEFT, DIRECTIONS.DOWN_LEFT, DIRECTIONS.DOWN];
 const firstQ = [DIRECTIONS.DOWN, DIRECTIONS.DOWN_RIGHT, DIRECTIONS.RIGHT];
 
 export function calculateRelativeQuadrant(
-    reference: Position,
-    target: Position
+    reference: XYPair,
+    target: XYPair
 ): DirectionKeys {
     const deltaX = target.x - reference.x;
     const deltaY = target.y - reference.y;
@@ -47,27 +46,8 @@ export function calculateRelativeQuadrant(
     }
 }
 
-function getVelocity(key: DirectionKeys, scalar: number) {
+export function getVelocity(key: DirectionKeys, scalar: number) {
     const { x, y } = DIRECTIONS[key];
     return { x: x * scalar, y: y * scalar };
 }
 
-export class Velocity extends Component {
-    #direction: DirectionKeys = "STATIONARY";
-    #scalar: number = 1;
-    velocity: DirectionsValues = DIRECTIONS["STATIONARY"];
-    constructor(speed: number = 1) {
-        super();
-        this.#scalar = speed
-    }
-
-    setDirection = (direction: DirectionKeys) => {
-        this.#direction = direction;
-        this.velocity = getVelocity(this.#direction, this.#scalar);
-    };
-
-    setSpeed = (scalar: number) => {
-        this.#scalar = scalar;
-        this.velocity = getVelocity(this.#direction, this.#scalar);
-    };
-}

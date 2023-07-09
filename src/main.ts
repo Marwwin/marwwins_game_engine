@@ -1,13 +1,11 @@
-import { Position } from "./Components/Position";
-import { Velocity } from "./Components/Velocity";
-import { Screen } from "./Components/Screen";
+import { Body } from "./Components/Body";
 import * as System from "./Systems/index";
 import { Engine } from "./Engine/Engine";
 import { ERRORS } from "./scripts/Errors";
 import "./style.css";
-import { Shape } from "./Components/Shape";
 import { MouseClickListener } from "./Components/MouseClickListener";
 import { MouseMoveListener } from "./Components/MouseMoveListener";
+import { Hoverable } from "./Components/Hoverable";
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 800;
@@ -35,28 +33,25 @@ function setup() {
 }
 
 function createSystems(engine: Engine) {
-    engine.addSystem(new System.Screen());
-    engine.addSystem(new System.MouseFollower());
+    engine.addSystem(new System.BackgroundRenderer());
     engine.addSystem(new System.Renderer());
+    engine.addSystem(new System.MouseFollower());
+    engine.addSystem(new System.MouseHoverable());
     engine.addSystem(new System.Move());
 }
 
 function createEntities(engine: Engine) {
     // Create entity for rendering screen
-    engine.addComponent(engine.addEntity(), new Screen());
 
     engine.addComponents(engine.addEntity(), [
-        new Position(500, 500),
-        new Velocity(),
-        new Shape("Aqua", { h: 10, w: 10 }),
+        new Body({ x: 300, y: 500 }),
         new MouseClickListener(),
     ]);
 
     engine.addComponents(engine.addEntity(), [
-        new Position(111, 600),
-        new Velocity(),
-        new Shape("Coral", { h: 5, w: 5 }),
-        new MouseClickListener(),
+        new Body({ x: 111, y: 200 }),
+        new Hoverable(),
+        new MouseMoveListener(),
     ]);
 }
 

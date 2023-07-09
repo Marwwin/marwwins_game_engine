@@ -1,14 +1,11 @@
 import { MouseClickListener } from "../Components/MouseClickListener";
-import { Position } from "../Components/Position";
-import { Shape } from "../Components/Shape";
-import { Velocity, calculateRelativeQuadrant } from "../Components/Velocity";
+import { Body } from "../Components/Body";
+import { calculateRelativeQuadrant, getVelocity } from "../utils/velocity";
 import { System } from "../Engine/System";
 
 export class MouseFollower extends System {
     componentsRequired = new Set<Function>([
-        Velocity,
-        Position,
-        Shape,
+        Body,
         MouseClickListener,
     ]);
     update(entities: Set<number>): void {
@@ -19,17 +16,21 @@ export class MouseFollower extends System {
                 return;
             }
 
-            const velocity = components.get(Velocity);
-            const position = components.get(Position);
-            const shape = components.get(Shape);
+            const body = components.get(Body);
 
             const newP = {
-                x: position.x + shape.size.w / 2,
-                y: position.y + shape.size.h / 2,
+                x: body.position.x + body.shape.w / 2,
+                y: body.position.y + body.shape.h / 2,
             };
-            
-            const direction = calculateRelativeQuadrant(newP, mouse.state);
-            velocity.setDirection(direction);
+            const canvas = this.engine.getCanvas().getBoundingClientRect();
+
+            const newM = {
+                x: mouse.state.x - canvas.left,
+                y: mouse.state.y - canvas.top,
+            };
+
+            const direction = calculateRelativeQuadrant(newP, newM);
+            body.velocity = getVelocity(direction, body.speed);
         }
     }
 }

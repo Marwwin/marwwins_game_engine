@@ -2,6 +2,7 @@ import { ERRORS } from "../scripts/Errors";
 import { Component } from "./Component";
 import { ComponentContainer } from "./ComponentContainer";
 import { Entity } from "./Entity";
+import { Publisher, PublisherClass } from "./Publisher";
 import { System } from "./System";
 
 export class Engine {
@@ -43,7 +44,7 @@ export class Engine {
     }
 
     addComponents(entity: Entity, components: Component[]): void {
-        for (const component of components){
+        for (const component of components) {
             this.#entities.get(entity)?.add(component);
             this.#checkE(entity);
         }
@@ -51,10 +52,10 @@ export class Engine {
 
     getComponents(entity: Entity): ComponentContainer {
         const comp = this.#entities.get(entity);
-        if (comp === undefined){
-            throw new Error(ERRORS.NO_COMPONENT_FOUND)
+        if (comp === undefined) {
+            throw new Error(ERRORS.NO_COMPONENT_FOUND);
         }
-        return comp
+        return comp;
     }
 
     removeComponent(entity: Entity, componentClass: Function): void {
@@ -95,7 +96,15 @@ export class Engine {
 
     // API: Observer
 
-    
+    #pubs = new Map<Function, Publisher>();
+
+    addPublisher(pub: Publisher) {
+        this.#pubs.set(pub.constructor, pub);
+    }
+
+    getPublisher<T extends Publisher>(pub: PublisherClass<T>): T {
+        return this.#pubs.get(pub) as T;
+    }
 
     // Internal state checks and mutations
 

@@ -1,14 +1,11 @@
-import { ComponentListener } from "../Engine/ComponentListener";
-import { Position } from "./Position";
+import { ListenerComponent } from "../Engine/ListenerComponent";
+import { XYPair } from "../utils/types";
 
-
-export class MouseClickListener extends ComponentListener {
-
-    state: Position | undefined;
+export class MouseClickListener extends ListenerComponent {
+    state: XYPair | undefined;
     target: string;
     event: string;
 
-    static eventListenerAdded: boolean = false;
     static instances: MouseClickListener[] = [];
 
     constructor() {
@@ -24,13 +21,12 @@ export class MouseClickListener extends ComponentListener {
         MouseClickListener.instances.forEach((instance) => {
             instance.updateState(e);
         });
-    };
+    }
 
     updateState(e: any) {
-            console.log(e);
-            this.state = {
-                x: e.x - e.target.offsetLeft,
-                y: e.y - e.target.offsetTop,
-            };
-        }
+        this.state = {
+            x: e.clientX,
+            y: e.clientY,
+        };
+    }
 }
