@@ -6,19 +6,17 @@ export class MouseClickListener extends ListenerComponent {
     target: string;
     event: string;
 
-    static instances: MouseClickListener[] = [];
-
     constructor() {
         super();
         this.target = "canvas";
         this.event = "click";
 
-        MouseClickListener.instances.push(this);
-
+        this.addInstance();
         this.addEventListener();
     }
-    handleEvent(e: any) {
-        MouseClickListener.instances.forEach((instance) => {
+    
+    handleEvent = (e: any) => {
+        this.getInstances<MouseClickListener>().forEach((instance) => {
             instance.updateState(e);
         });
     }

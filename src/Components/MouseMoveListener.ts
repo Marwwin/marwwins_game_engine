@@ -9,8 +9,6 @@ export class MouseMoveListener extends ListenerComponent {
     event: string;
     hasChanged: boolean = false;
 
-    static instances: MouseMoveListener[] = [];
-
     constructor() {
         super();
 
@@ -20,12 +18,12 @@ export class MouseMoveListener extends ListenerComponent {
         }
         this.event = "mousemove";
         
-        MouseMoveListener.instances.push(this)
+        this.addInstance()
         this.addEventListener();
     }
 
-    handleEvent(e: any): void {
-        MouseMoveListener.instances.forEach((instance) => {
+    handleEvent = (e: any): void => {
+        this.getInstances<MouseMoveListener>().forEach((instance) => {
             instance.updateState(e);
         });
     }

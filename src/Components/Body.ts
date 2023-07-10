@@ -23,4 +23,5 @@ export class Body extends Component {
         this.shape = shape;
         this.colour = colour;
     }
+
 }
