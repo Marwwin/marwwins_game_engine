@@ -23,5 +23,21 @@ export class Body extends Component {
         this.shape = shape;
         this.colour = colour;
     }
+}
 
+export function getBodySpecs(body:Body){
+    return {
+        left: body.position.x - body.shape.w,
+        right: body.position.x + body.shape.w,
+        top: body.position.y - body.shape.h,
+        bottom: body.position.y + body.shape.h,
+    }
+}
+export function getCorners(body:Body){
+    return {
+        x1: body.position.x - body.shape.w,
+        y1: body.position.x + body.shape.w,
+        x2: body.position.y - body.shape.h,
+        y2: body.position.y + body.shape.h,
+    }
 }

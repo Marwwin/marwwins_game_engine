@@ -35,6 +35,7 @@ function setup() {
 function createSystems(engine: Engine) {
     engine.addSystem(new System.BackgroundRenderer());
     engine.addSystem(new System.Renderer());
+    engine.addSystem(new System.CollisionDetection())
     engine.addSystem(new System.MouseFollower());
     engine.addSystem(new System.MouseHoverable());
     engine.addSystem(new System.Move());
@@ -44,15 +45,29 @@ function createEntities(engine: Engine) {
     // Create entity for rendering screen
 
     engine.addComponents(engine.addEntity(), [
-        new Body({ x: 300, y: 500 }),
+        new Body({ x: 270, y: 500 }),
         new MouseClickListener(),
-    ]);
-
-    engine.addComponents(engine.addEntity(), [
-        new Body({ x: 111, y: 200 }),
         new Hoverable(),
         new MouseMoveListener(),
     ]);
+    engine.addComponents(engine.addEntity(), [
+        new Body({ x: 240, y: 530 }),
+        new MouseClickListener(),
+        new Hoverable(),
+        new MouseMoveListener(),
+    ]);
+    //engine.addComponents(engine.addEntity(), [
+    //    new Body({ x: 680, y: 490 }),
+    //    new MouseClickListener(),
+    //    new Hoverable(),
+    //    new MouseMoveListener(),
+    //]);
+
+   // engine.addComponents(engine.addEntity(), [
+   //     new Body({ x: 111, y: 200 }),
+   //     new Hoverable(),
+   //     new MouseMoveListener(),
+   // ]);
 }
 
 function loop() {

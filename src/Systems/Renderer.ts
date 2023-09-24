@@ -10,7 +10,12 @@ export class Renderer extends System {
 
             const ctx = this.engine.getContext();
             ctx.fillStyle = body.colour;
-            ctx.fillRect(body.position.x, body.position.y, body.shape.w, body.shape.h);
+            ctx.fillRect(
+                body.position.x,
+                body.position.y,
+                body.shape.w,
+                body.shape.h
+            );
         }
     }
 }

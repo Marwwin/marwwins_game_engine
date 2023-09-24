@@ -22,11 +22,6 @@ export class MouseMoveListener extends ListenerComponent {
         this.addEventListener();
     }
 
-    handleEvent = (e: any): void => {
-        this.getInstances<MouseMoveListener>().forEach((instance) => {
-            instance.updateState(e);
-        });
-    }
 
     updateState(e: any) {
         if (this.HTMLElement === null){

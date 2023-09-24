@@ -14,12 +14,6 @@ export class MouseClickListener extends ListenerComponent {
         this.addInstance();
         this.addEventListener();
     }
-    
-    handleEvent = (e: any) => {
-        this.getInstances<MouseClickListener>().forEach((instance) => {
-            instance.updateState(e);
-        });
-    }
 
     updateState(e: any) {
         this.state = {

@@ -4,21 +4,8 @@ export abstract class ListenerComponent extends Component {
     abstract target: string;
     abstract event: string;
 
-    /**
-     *
-     * handleEvent must be defined as an arrow function so this is correct
-     *
-     * @param e: An event
-     */
-    abstract handleEvent(e: any): void;
-
     static eventListenerAdded: Map<Function, boolean> = new Map();
     static instances: Map<Function, ListenerComponent[]> = new Map();
-
-    getInstances<T extends ListenerComponent>(): T[] {
-        const instances = ListenerComponent.instances.get(this.constructor);
-        return instances as T[];
-    }
 
     addInstance() {
         const instances = ListenerComponent.instances.get(this.constructor);
@@ -28,6 +15,23 @@ export abstract class ListenerComponent extends Component {
         }
         instances.push(this);
     }
+
+    getInstances<T extends ListenerComponent>(): T[] {
+        const instances = ListenerComponent.instances.get(this.constructor);
+        return instances as T[];
+    }
+
+    /**
+     *
+     * handleEvent must be defined as an arrow function so this is correct
+     *
+     * @param e: An event
+     */
+    handleEvent = (e: any): void => {
+        this.getInstances<this>().forEach((instance: any) => {
+            instance.updateState(e);
+        });
+    };
 
     addEventListener() {
         if (ListenerComponent.eventListenerAdded.get(this.constructor)) {
